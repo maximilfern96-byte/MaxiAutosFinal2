@@ -1,0 +1,359 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<style>
+
+.header {
+background-color: #0d1b2a;
+color: white;
+text-align: center;
+padding: 20px;
+}
+
+.contenedor {
+width: 90%;
+max-width: 1100px;
+margin: 30px auto;
+}
+
+.volver {
+display: inline-block;
+margin-bottom: 20px;
+text-decoration: none;
+color: #0d1b2a;
+font-weight: bold;
+}
+
+.detalle-card {
+background: white;
+border-radius: 14px;
+box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+overflow: hidden;
+padding: 30px;
+}
+
+.galeria {
+margin-bottom: 25px;
+}
+
+.imagen-principal-contenedor {
+position: relative;
+}
+
+.detalle-img {
+width: 100%;
+height: 500px;
+object-fit: cover;
+border-radius: 10px;
+display: block;
+}
+
+.flecha {
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+background-color: rgba(0, 0, 0, 0.5);
+color: white;
+border: none;
+font-size: 28px;
+width: 45px;
+height: 45px;
+border-radius: 50%;
+cursor: pointer;
+}
+
+.flecha.izquierda {
+left: 15px;
+}
+
+.flecha.derecha {
+right: 15px;
+}
+
+.miniaturas {
+display: flex;
+gap: 10px;
+margin-top: 15px;
+flex-wrap: wrap;
+}
+
+.miniatura {
+width: 110px;
+height: 80px;
+object-fit: cover;
+border-radius: 8px;
+cursor: pointer;
+border: 3px solid transparent;
+transition: 0.2s ease;
+}
+
+.miniatura.activa {
+border-color: #0d1b2a;
+}
+
+.titulo {
+font-size: 36px;
+margin-bottom: 15px;
+color: #111;
+}
+
+.info p {
+font-size: 20px;
+margin: 10px 0;
+color: #333;
+}
+
+.precio {
+font-size: 38px;
+font-weight: bold;
+color: #0d1b2a;
+margin: 20px 0;
+}
+
+.descripcion {
+margin-top: 25px;
+}
+
+.descripcion h3 {
+margin-bottom: 10px;
+font-size: 24px;
+}
+
+.descripcion p {
+font-size: 18px;
+color: #444;
+line-height: 1.6;
+}
+
+.boton-favorito {
+display: inline-block;
+margin-top: 25px;
+background-color: #ffd700;
+color: black;
+text-decoration: none;
+padding: 14px 22px;
+border-radius: 10px;
+font-size: 18px;
+font-weight: bold;
+margin-right: 10px;
+}
+
+.boton-favorito:hover {
+opacity: 0.9;
+}
+
+.boton-whatsapp {
+display: inline-block;
+margin-top: 25px;
+background-color: #25D366;
+color: white;
+text-decoration: none;
+padding: 14px 22px;
+border-radius: 10px;
+font-size: 18px;
+font-weight: bold;
+}
+
+.boton-whatsapp:hover {
+opacity: 0.9;
+}
+
+</style>
+
+<div class="header">
+<h1>MAXI AUTOS</h1>
+<p>Detalle del vehículo</p>
+</div>
+
+<div class="contenedor">
+
+<a href="/vehiculos/" class="volver">
+← Volver al listado
+</a>
+
+<div class="detalle-card">
+
+<div class="galeria">
+
+<div class="imagen-principal-contenedor">
+
+{% if fotos %}
+
+<img
+id="imagen-principal"
+src="{{ fotos.0.imagen.url }}"
+alt="{{ vehiculo.titulo }}"
+class="detalle-img">
+
+{% elif vehiculo.imagen %}
+
+<img
+id="imagen-principal"
+src="{{ vehiculo.imagen.url }}"
+alt="{{ vehiculo.titulo }}"
+class="detalle-img">
+
+{% endif %}
+
+{% if fotos|length > 1 %}
+
+<button class="flecha izquierda" onclick="cambiarImagen(-1)">
+‹
+</button>
+
+<button class="flecha derecha" onclick="cambiarImagen(1)">
+›
+</button>
+
+{% endif %}
+
+</div>
+
+{% if fotos %}
+
+<div class="miniaturas">
+
+{% for foto in fotos %}
+
+<img
+src="{{ foto.imagen.url }}"
+class="miniatura {% if forloop.first %}activa{% endif %}"
+onclick="mostrarImagen('{{ foto.imagen.url }}', this)"
+alt="Foto {{ forloop.counter }}"
+>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+</div>
+
+<h2 class="titulo">
+{{ vehiculo.titulo }}
+</h2>
+
+<div class="info">
+
+<p><strong>Marca:</strong> {{ vehiculo.marca }}</p>
+
+<p><strong>Año:</strong> {{ vehiculo.anio }}</p>
+
+<p><strong>Tipo:</strong> {{ vehiculo.tipo }}</p>
+
+<p><strong>Categoría:</strong> {{ vehiculo.categoria.nombre }}</p>
+
+</div>
+
+<div class="precio">
+${{ vehiculo.precio }}
+</div>
+
+<div class="descripcion">
+
+<h3>Descripción</h3>
+
+<p>{{ vehiculo.descripcion }}</p>
+
+</div>
+
+{% if es_favorito %}
+
+<a
+href="{% url 'quitar_favorito' vehiculo.id %}"
+class="boton-favorito"
+style="background:#ccc;"
+>
+⭐ Quitar de favoritos
+</a>
+
+{% else %}
+
+<a
+href="{% url 'agregar_favorito' vehiculo.id %}"
+class="boton-favorito"
+>
+⭐ Guardar en favoritos
+</a>
+
+{% endif %}
+
+<a
+href="https://wa.me/5490000000000?text=Hola,%20me%20interesa%20el%20vehículo%20{{ vehiculo.titulo }}"
+class="boton-whatsapp"
+target="_blank"
+>
+Contactar por WhatsApp
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+const imagenes = [
+
+{% if fotos %}
+
+{% for foto in fotos %}
+
+"{{ foto.imagen.url }}"{% if not forloop.last %},{% endif %}
+
+{% endfor %}
+
+{% elif vehiculo.imagen %}
+
+"{{ vehiculo.imagen.url }}"
+
+{% endif %}
+
+];
+
+let indiceActual = 0;
+
+function actualizarMiniaturas() {
+
+const miniaturas = document.querySelectorAll(".miniatura");
+
+miniaturas.forEach((miniatura, index) => {
+miniatura.classList.toggle("activa", index === indiceActual);
+});
+
+}
+
+function mostrarImagen(url, elemento) {
+
+document.getElementById("imagen-principal").src = url;
+
+indiceActual = imagenes.indexOf(url);
+
+actualizarMiniaturas();
+
+}
+
+function cambiarImagen(direccion) {
+
+if (imagenes.length === 0) return;
+
+indiceActual += direccion;
+
+if (indiceActual < 0) {
+indiceActual = imagenes.length - 1;
+}
+
+if (indiceActual >= imagenes.length) {
+indiceActual = 0;
+}
+
+document.getElementById("imagen-principal").src = imagenes[indiceActual];
+
+actualizarMiniaturas();
+
+}
+
+</script>
+
+{% endblock %}

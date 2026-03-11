@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<title>MAXI AUTOS</title>
+
+<!-- ICONOS REDES -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+margin:0;
+background:#f4f4f4;
+display:flex;
+flex-direction:column;
+min-height:100vh;
+}
+
+.navbar{
+background:#0d1b2a;
+padding:15px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+color:white;
+font-size:22px;
+font-weight:bold;
+text-decoration:none;
+}
+
+.menu{
+display:flex;
+align-items:center;
+gap:18px;
+}
+
+.menu a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
+
+.menu a:hover{
+opacity:0.8;
+}
+
+.usuario{
+color:white;
+font-weight:bold;
+}
+
+.logout-form{
+display:inline;
+margin:0;
+}
+
+.logout-btn{
+background:none;
+border:none;
+color:white;
+font-weight:bold;
+cursor:pointer;
+padding:0;
+font-size:16px;
+}
+
+.logout-btn:hover{
+opacity:0.8;
+}
+
+.contenido{
+width:90%;
+max-width:1200px;
+margin:30px auto;
+flex:1;
+}
+
+/* FOOTER */
+
+.footer{
+background:#0d1b2a;
+color:white;
+padding:40px 20px;
+margin-top:40px;
+}
+
+.footer-contenedor{
+max-width:1200px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+flex-wrap:wrap;
+gap:30px;
+}
+
+.footer-col{
+flex:1;
+min-width:220px;
+}
+
+.footer h3{
+margin-top:0;
+margin-bottom:15px;
+}
+
+.footer a{
+color:white;
+text-decoration:none;
+display:block;
+margin-bottom:10px;
+}
+
+.footer a:hover{
+opacity:0.8;
+}
+
+.footer i{
+margin-right:8px;
+}
+
+.footer-bottom{
+text-align:center;
+margin-top:30px;
+font-size:14px;
+opacity:0.8;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+<a href="/" class="logo">
+MAXI AUTOS
+</a>
+
+<div class="menu">
+
+<a href="/vehiculos/">Todos</a>
+
+<a href="/categoria/autos/">Autos</a>
+
+<a href="/categoria/motos/">Motos</a>
+
+<a href="/favoritos/">⭐ Favoritos ({{ favoritos_count }})</a>
+
+{% if user.is_authenticated %}
+
+<span class="usuario">
+👤 {{ user.username }}
+</span>
+
+<form method="post" action="{% url 'logout' %}" class="logout-form">
+{% csrf_token %}
+<button type="submit" class="logout-btn">Salir</button>
+</form>
+
+{% else %}
+
+<a href="/accounts/login/">Login</a>
+
+{% endif %}
+
+</div>
+
+</div>
+
+<div class="contenido">
+
+{% block contenido %}
+{% endblock %}
+
+</div>
+
+<footer class="footer">
+
+<div class="footer-contenedor">
+
+<div class="footer-col">
+<h3>MAXI AUTOS</h3>
+<p>Marketplace de vehículos donde podés encontrar autos y motos al mejor precio.</p>
+</div>
+
+<div class="footer-col">
+<h3>Contacto</h3>
+
+<a href="https://wa.me/5490000000000" target="_blank">
+<i class="fa-brands fa-whatsapp"></i> WhatsApp
+</a>
+
+<a href="tel:+540000000000">
+<i class="fa-solid fa-phone"></i> +54 0000 000000
+</a>
+
+</div>
+
+<div class="footer-col">
+<h3>Redes</h3>
+
+<a href="https://instagram.com" target="_blank">
+<i class="fa-brands fa-instagram"></i> Instagram
+</a>
+
+</div>
+
+<div class="footer-col">
+<h3>Ubicación</h3>
+
+<p>
+<i class="fa-solid fa-location-dot"></i>
+Argentina
+</p>
+
+</div>
+
+</div>
+
+<div class="footer-bottom">
+© 2026 MAXI AUTOS - Todos los derechos reservados
+</div>
+
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mis Favoritos | MAXI AUTOS</title>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    background-color:#f4f4f4;
+    margin:0;
+    padding:0;
+}
+
+.header{
+    background-color:#0d1b2a;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+.contenedor{
+    width:90%;
+    max-width:1200px;
+    margin:30px auto;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 14px rgba(0,0,0,0.12);
+    transition:transform 0.2s ease;
+    text-decoration:none;
+    color:inherit;
+    display:block;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    display:block;
+}
+
+.contenido{
+    padding:16px;
+}
+
+.contenido h2{
+    margin-top:0;
+    margin-bottom:10px;
+    font-size:22px;
+}
+
+.contenido p{
+    margin:6px 0;
+    color:#444;
+}
+
+.precio{
+    font-size:24px;
+    font-weight:bold;
+    color:#0d1b2a;
+    margin-top:12px;
+}
+
+.volver{
+    display:inline-block;
+    margin-bottom:20px;
+    text-decoration:none;
+    color:#0d1b2a;
+    font-weight:bold;
+}
+
+.sin-favoritos{
+    text-align:center;
+    background:white;
+    padding:40px;
+    border-radius:10px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.1);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h1>MAXI AUTOS</h1>
+<p>Mis vehículos favoritos</p>
+</div>
+
+<div class="contenedor">
+
+<a href="/vehiculos/" class="volver">← Volver a vehículos</a>
+
+<div class="grid">
+
+{% if favoritos %}
+
+{% for favorito in favoritos %}
+
+<a href="{% url 'detalle_vehiculo' favorito.vehiculo.id %}" class="card">
+
+{% if favorito.vehiculo.imagen %}
+<img src="{{ favorito.vehiculo.imagen.url }}">
+{% endif %}
+
+<div class="contenido">
+
+<h2>{{ favorito.vehiculo.titulo }}</h2>
+
+<p><strong>Marca:</strong> {{ favorito.vehiculo.marca }}</p>
+
+<p><strong>Año:</strong> {{ favorito.vehiculo.anio }}</p>
+
+<p><strong>Tipo:</strong> {{ favorito.vehiculo.tipo }}</p>
+
+<p class="precio">${{ favorito.vehiculo.precio }}</p>
+
+</div>
+
+</a>
+
+{% endfor %}
+
+{% else %}
+
+<div class="sin-favoritos">
+<h2>No tienes vehículos guardados</h2>
+<p>Agrega autos a favoritos para verlos aquí.</p>
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</body>
+</html>

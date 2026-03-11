@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>MAXI AUTOS</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0b0f14;
+            color: white;
+        }
+
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+                        url('/media/vehiculos/1999-nissan-skyline-gt-r-r34.webp') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .contenido {
+            max-width: 800px;
+        }
+
+        .contenido h1 {
+            font-size: 64px;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .contenido p {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #e5e5e5;
+        }
+
+        .botones {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .boton {
+            display: inline-block;
+            padding: 14px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.2s ease;
+        }
+
+        .boton-principal {
+            background-color: #ffffff;
+            color: #0d1b2a;
+        }
+
+        .boton-principal:hover {
+            opacity: 0.9;
+        }
+
+        .boton-secundario {
+            border: 2px solid white;
+            color: white;
+        }
+
+        .boton-secundario:hover {
+            background-color: white;
+            color: #0d1b2a;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="contenido">
+            <h1>MAXI AUTOS</h1>
+            <p>Encontrá tu próximo vehículo en un solo lugar</p>
+
+            <div class="botones">
+                <a href="/vehiculos/" class="boton boton-principal">Ver vehículos</a>
+                <a href="/admin/" class="boton boton-secundario">Administrar</a>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

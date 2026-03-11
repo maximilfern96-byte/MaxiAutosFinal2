@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<style>
+
+.header{
+background-color:#0d1b2a;
+color:white;
+text-align:center;
+padding:20px;
+margin-bottom:20px;
+}
+
+.buscador{
+text-align:center;
+margin-bottom:30px;
+}
+
+.buscador input{
+padding:12px;
+width:320px;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:16px;
+margin-right:10px;
+}
+
+.buscador button{
+padding:12px 20px;
+border:none;
+background:#0d1b2a;
+color:white;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.buscador button:hover{
+opacity:0.9;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 4px 14px rgba(0,0,0,0.12);
+transition:transform 0.2s ease;
+text-decoration:none;
+color:inherit;
+display:block;
+}
+
+.card:hover{
+transform:translateY(-4px);
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:cover;
+display:block;
+}
+
+.contenido{
+padding:16px;
+}
+
+.contenido h2{
+margin-top:0;
+margin-bottom:10px;
+font-size:22px;
+color:#111;
+}
+
+.contenido p{
+margin:6px 0;
+color:#444;
+}
+
+.precio{
+font-size:24px;
+font-weight:bold;
+color:#0d1b2a;
+margin-top:12px;
+}
+
+.sin-imagen{
+width:100%;
+height:220px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#d9d9d9;
+color:#555;
+font-weight:bold;
+}
+
+.volver{
+display:inline-block;
+margin-bottom:20px;
+text-decoration:none;
+color:#0d1b2a;
+font-weight:bold;
+}
+
+.sin-resultados{
+grid-column:1/-1;
+text-align:center;
+background:white;
+padding:40px;
+border-radius:10px;
+box-shadow:0 4px 14px rgba(0,0,0,0.1);
+}
+
+.btn-volver{
+display:inline-block;
+margin-top:15px;
+padding:10px 18px;
+background:#0d1b2a;
+color:white;
+border-radius:8px;
+text-decoration:none;
+}
+
+</style>
+
+<div class="header">
+    {% if categoria_actual %}
+        <h1>{{ categoria_actual.nombre }}</h1>
+    {% else %}
+        <h1>Listado de vehículos</h1>
+    {% endif %}
+</div>
+
+<a href="/" class="volver">← Volver al inicio</a>
+
+<div class="buscador">
+    {% if categoria_actual %}
+        <form method="GET" action="{% url 'vehiculos_categoria' categoria_actual.slug %}">
+    {% else %}
+        <form method="GET" action="{% url 'vehiculos' %}">
+    {% endif %}
+
+        <input
+            type="text"
+            name="q"
+            placeholder="Buscar por título..."
+            value="{{ busqueda|default:'' }}"
+        >
+
+        <button type="submit">
+            Buscar
+        </button>
+    </form>
+</div>
+
+<div class="grid">
+
+{% if vehiculos %}
+
+    {% for vehiculo in vehiculos %}
+
+    <a href="{% url 'detalle_vehiculo' vehiculo.id %}" class="card">
+
+        {% if vehiculo.imagen %}
+            <img src="{{ vehiculo.imagen.url }}" alt="{{ vehiculo.titulo }}">
+        {% else %}
+            <div class="sin-imagen">Sin imagen</div>
+        {% endif %}
+
+        <div class="contenido">
+            <h2>{{ vehiculo.titulo }}</h2>
+            <p><strong>Marca:</strong> {{ vehiculo.marca }}</p>
+            <p><strong>Año:</strong> {{ vehiculo.anio }}</p>
+            <p><strong>Tipo:</strong> {{ vehiculo.tipo }}</p>
+            <p class="precio">${{ vehiculo.precio }}</p>
+        </div>
+
+    </a>
+
+    {% endfor %}
+
+{% else %}
+
+<div class="sin-resultados">
+    <h2>No se encontraron vehículos</h2>
+    <p>Intentá con otra búsqueda.</p>
+
+    {% if categoria_actual %}
+        <a href="{% url 'vehiculos_categoria' categoria_actual.slug %}" class="btn-volver">
+            Ver {{ categoria_actual.nombre }}
+        </a>
+    {% else %}
+        <a href="{% url 'vehiculos' %}" class="btn-volver">
+            Ver todos los vehículos
+        </a>
+    {% endif %}
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}
